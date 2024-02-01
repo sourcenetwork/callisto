@@ -10,6 +10,7 @@ import (
 	"github.com/forbole/bdjuno/v4/database"
 	"github.com/forbole/bdjuno/v4/modules/distribution"
 	modulestypes "github.com/forbole/bdjuno/v4/modules/types"
+	"github.com/forbole/bdjuno/v4/utils"
 )
 
 // communityPoolCmd returns the Cobra command allowing to refresh community pool
@@ -23,7 +24,8 @@ func communityPoolCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 				return err
 			}
 
-			sources, err := modulestypes.BuildSources(config.Cfg.Node, parseCtx.EncodingConfig)
+			cfg := utils.FromJunoEncodingConfig(parseCtx.EncodingConfig)
+			sources, err := modulestypes.BuildSources(config.Cfg.Node, &cfg)
 			if err != nil {
 				return err
 			}

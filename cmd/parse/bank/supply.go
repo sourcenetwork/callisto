@@ -11,6 +11,7 @@ import (
 
 	"github.com/forbole/bdjuno/v4/database"
 	"github.com/forbole/bdjuno/v4/modules/bank"
+	"github.com/forbole/bdjuno/v4/utils"
 )
 
 // supplyCmd returns the Cobra command allowing to refresh x/bank total supply
@@ -24,7 +25,8 @@ func supplyCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 				return err
 			}
 
-			sources, err := modulestypes.BuildSources(config.Cfg.Node, parseCtx.EncodingConfig)
+			cfg := utils.FromJunoEncodingConfig(parseCtx.EncodingConfig)
+			sources, err := modulestypes.BuildSources(config.Cfg.Node, &cfg)
 			if err != nil {
 				return err
 			}

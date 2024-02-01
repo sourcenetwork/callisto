@@ -24,7 +24,7 @@ func (m *Module) HandleMsgExec(index int, _ *authz.MsgExec, _ int, executedMsg s
 
 // HandleMsg implements modules.MessageModule
 func (m *Module) HandleMsg(_ int, msg sdk.Msg, tx *juno.Tx) error {
-	addresses, err := m.messagesParser(m.cdc, msg)
+	addresses, err := m.messagesParser(tx)
 	if err != nil {
 		log.Error().Str("module", "auth").Err(err).
 			Str("operation", "refresh account").
@@ -60,9 +60,13 @@ func (m *Module) handleMsgCreateVestingAccount(msg *vestingtypes.MsgCreateVestin
 		return fmt.Errorf("error while storing vesting account: %s", err)
 	}
 
-	bva := vestingtypes.NewBaseVestingAccount(
+	bva, err := vestingtypes.NewBaseVestingAccount(
 		authttypes.NewBaseAccountWithAddress(accAddress), msg.Amount, msg.EndTime,
 	)
+	if err != nil {
+		return fmt.Errorf("error while creating base vesting account: %s: ", err)
+	}
+
 	err = m.db.StoreBaseVestingAccountFromMsg(bva, txTimestamp)
 	if err != nil {
 		return fmt.Errorf("error while storing base vesting account from msg %s", err)

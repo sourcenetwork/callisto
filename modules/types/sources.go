@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	sdklog "cosmossdk.io/log"
 	"cosmossdk.io/simapp"
 	"cosmossdk.io/simapp/params"
 	"github.com/cometbft/cometbft/libs/log"
@@ -18,6 +19,8 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/forbole/juno/v5/node/local"
 
+	govkeeper "github.com/cosmos/cosmos-sdk/x/gov/keeper"
+	mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	nodeconfig "github.com/forbole/juno/v5/node/config"
 
 	banksource "github.com/forbole/bdjuno/v4/modules/bank/source"
@@ -37,6 +40,7 @@ import (
 	stakingsource "github.com/forbole/bdjuno/v4/modules/staking/source"
 	localstakingsource "github.com/forbole/bdjuno/v4/modules/staking/source/local"
 	remotestakingsource "github.com/forbole/bdjuno/v4/modules/staking/source/remote"
+	"github.com/forbole/bdjuno/v4/utils"
 )
 
 type Sources struct {
@@ -61,20 +65,20 @@ func BuildSources(nodeCfg nodeconfig.Config, encodingConfig *params.EncodingConf
 }
 
 func buildLocalSources(cfg *local.Details, encodingConfig *params.EncodingConfig) (*Sources, error) {
-	source, err := local.NewSource(cfg.Home, encodingConfig)
+	source, err := local.NewSource(cfg.Home, utils.ToJunoEncodingConfig(*encodingConfig))
 	if err != nil {
 		return nil, err
 	}
 
 	app := simapp.NewSimApp(
-		log.NewTMLogger(log.NewSyncWriter(os.Stdout)), source.StoreDB, nil, true, nil, nil,
+		sdklog.NewLogger(log.NewSyncWriter(os.Stdout)), source.StoreDB, nil, true, nil, nil,
 	)
 
 	sources := &Sources{
 		BankSource: localbanksource.NewSource(source, banktypes.QueryServer(app.BankKeeper)),
 		// DistrSource:    localdistrsource.NewSource(source, distrtypes.QueryServer(app.DistrKeeper)),
-		GovSource:      localgovsource.NewSource(source, govtypesv1.QueryServer(app.GovKeeper)),
-		MintSource:     localmintsource.NewSource(source, minttypes.QueryServer(app.MintKeeper)),
+		GovSource:      localgovsource.NewSource(source, govtypesv1.QueryServer(govkeeper.NewQueryServer(app.GovKeeper))),
+		MintSource:     localmintsource.NewSource(source, minttypes.QueryServer(mintkeeper.NewQueryServerImpl(app.MintKeeper))),
 		SlashingSource: localslashingsource.NewSource(source, slashingtypes.QueryServer(app.SlashingKeeper)),
 		StakingSource:  localstakingsource.NewSource(source, stakingkeeper.Querier{Keeper: app.StakingKeeper}),
 	}

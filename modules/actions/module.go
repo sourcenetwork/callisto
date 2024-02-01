@@ -9,6 +9,7 @@ import (
 	"github.com/forbole/juno/v5/types/config"
 
 	modulestypes "github.com/forbole/bdjuno/v4/modules/types"
+	"github.com/forbole/bdjuno/v4/utils"
 )
 
 const (
@@ -43,7 +44,7 @@ func NewModule(cfg config.Config, encodingConfig *params.EncodingConfig) *Module
 	}
 
 	// Build the node
-	junoNode, err := builder.BuildNode(nodeCfg, encodingConfig)
+	junoNode, err := builder.BuildNode(nodeCfg, utils.ToJunoEncodingConfig(*encodingConfig))
 	if err != nil {
 		panic(err)
 	}

@@ -39,7 +39,7 @@ require (
 	cosmossdk.io/api v0.7.3-0.20231029200940-6af7f30bfd54 // indirect
 	cosmossdk.io/client/v2 v2.0.0-beta.1 // indirect
 	cosmossdk.io/collections v0.4.0 // indirect
-	cosmossdk.io/core v0.12.0 // indirect
+	cosmossdk.io/core v0.11.0 // indirect
 	cosmossdk.io/depinject v1.0.0-alpha.4 // indirect
 	cosmossdk.io/errors v1.0.1 // indirect
 	cosmossdk.io/log v1.3.0 // indirect
@@ -344,13 +344,8 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-// This is to avoid warnings while running the binary
-// See here: https://github.com/desmos-labs/desmos/pull/1131#discussion_r1194090419
-replace github.com/cosmos/gogoproto => github.com/cosmos/gogoproto v1.4.8
-
-replace github.com/forbole/juno/v5 => ../juno
-
 replace (
 	cosmossdk.io/simapp => ../cosmos-sdk/simapp
 	github.com/cosmos/cosmos-sdk => ../cosmos-sdk
+	github.com/forbole/juno/v5 => ../juno
 )

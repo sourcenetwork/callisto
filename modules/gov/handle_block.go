@@ -19,7 +19,7 @@ func (m *Module) HandleBlock(
 	b *tmctypes.ResultBlock, blockResults *tmctypes.ResultBlockResults, _ []*juno.Tx, _ *tmctypes.ResultValidators,
 ) error {
 
-	err := m.updateProposalsStatus(b.Block.Height, blockResults.EndBlockEvents)
+	err := m.updateProposalsStatus(b.Block.Height, blockResults.FinalizeBlockEvents)
 	if err != nil {
 		log.Error().Str("module", "gov").Int64("height", b.Block.Height).
 			Err(err).Msg("error while updating proposals")
