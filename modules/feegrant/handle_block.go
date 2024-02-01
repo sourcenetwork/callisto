@@ -5,7 +5,7 @@ import (
 
 	abci "github.com/cometbft/cometbft/abci/types"
 
-	feegranttypes "github.com/cosmos/cosmos-sdk/x/feegrant"
+	feegranttypes "cosmossdk.io/x/feegrant"
 	juno "github.com/forbole/juno/v5/types"
 
 	tmctypes "github.com/cometbft/cometbft/rpc/core/types"

@@ -17,7 +17,7 @@ import (
 
 	tmctypes "github.com/cometbft/cometbft/rpc/core/types"
 
-	feegranttypes "github.com/cosmos/cosmos-sdk/x/feegrant"
+	feegranttypes "cosmossdk.io/x/feegrant"
 	"github.com/rs/zerolog/log"
 )
 
