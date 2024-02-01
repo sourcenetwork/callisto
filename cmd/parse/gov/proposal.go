@@ -40,7 +40,8 @@ func proposalCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 				return err
 			}
 
-			sources, err := modulestypes.BuildSources(config.Cfg.Node, parseCtx.EncodingConfig)
+			cfg := utils.FromJunoEncodingConfig(parseCtx.EncodingConfig)
+			sources, err := modulestypes.BuildSources(config.Cfg.Node, &cfg)
 			if err != nil {
 				return err
 			}

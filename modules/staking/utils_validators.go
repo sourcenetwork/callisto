@@ -247,10 +247,11 @@ func (m *Module) updateProposalValidatorStatusSnapshot(
 	snapshots := make([]types.ProposalValidatorStatusSnapshot, len(validators))
 
 	for index, validator := range validators {
-		consAddr, err := validator.GetConsAddr()
+		bytes, err := validator.GetConsAddr()
 		if err != nil {
 			return err
 		}
+		consAddr := sdk.ConsAddress(bytes)
 
 		snapshots[index] = types.NewProposalValidatorStatusSnapshot(
 			proposalID,
@@ -274,10 +275,11 @@ func (m *Module) updateValidatorStatusAndVP(height int64, validators []stakingty
 	statuses := make([]types.ValidatorStatus, len(validators))
 
 	for index, validator := range validators {
-		consAddr, err := validator.GetConsAddr()
+		bytes, err := validator.GetConsAddr()
 		if err != nil {
 			return err
 		}
+		consAddr := sdk.ConsAddress(bytes)
 
 		if found, _ := m.db.HasValidator(consAddr.String()); !found {
 			continue
