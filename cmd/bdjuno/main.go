@@ -18,6 +18,7 @@ import (
 	"cosmossdk.io/depinject"
 	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/runtime"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/forbole/bdjuno/v4/database"
 	"github.com/forbole/bdjuno/v4/modules"
 	"github.com/sourcenetwork/sourcehub/app"
@@ -58,6 +59,10 @@ func main() {
 // support custom messages.
 // This should be edited by custom implementations if needed.
 func getBasicManagers() []module.BasicManager {
+	// initialize sdk config to use `source` as account prefix - used by bank module
+	sdkCfg := sdk.GetConfig()
+	sdkCfg.SetBech32PrefixForAccount(app.AccountAddressPrefix, "")
+
 	var appBuilder *runtime.AppBuilder
 
 	config := depinject.Configs(
