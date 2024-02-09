@@ -5,6 +5,7 @@ go 1.21
 toolchain go1.21.5
 
 require (
+	cosmossdk.io/log v1.3.0
 	cosmossdk.io/math v1.2.0
 	cosmossdk.io/simapp v0.0.0-20240201132730-d70eadb3aa41
 	cosmossdk.io/x/feegrant v0.1.0
@@ -42,7 +43,6 @@ require (
 	cosmossdk.io/core v0.11.0 // indirect
 	cosmossdk.io/depinject v1.0.0-alpha.4 // indirect
 	cosmossdk.io/errors v1.0.1 // indirect
-	cosmossdk.io/log v1.3.0 // indirect
 	cosmossdk.io/store v1.0.2 // indirect
 	cosmossdk.io/x/circuit v0.1.0 // indirect
 	cosmossdk.io/x/evidence v0.1.0 // indirect
