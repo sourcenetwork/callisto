@@ -15,8 +15,12 @@ import (
 
 	// _ "cosmossdk.io/simapp"
 
+	"cosmossdk.io/depinject"
+	"cosmossdk.io/log"
+	"github.com/cosmos/cosmos-sdk/runtime"
 	"github.com/forbole/bdjuno/v4/database"
 	"github.com/forbole/bdjuno/v4/modules"
+	"github.com/sourcenetwork/sourcehub/app"
 )
 
 func main() {
@@ -54,8 +58,22 @@ func main() {
 // support custom messages.
 // This should be edited by custom implementations if needed.
 func getBasicManagers() []module.BasicManager {
+	var appBuilder *runtime.AppBuilder
+
+	config := depinject.Configs(
+		app.AppConfig(),
+		depinject.Supply(
+			log.NewNopLogger(),
+		),
+	)
+
+	err := depinject.Inject(config, &appBuilder)
+	if err != nil {
+		panic(err)
+	}
+
 	return []module.BasicManager{
-		//simapp.ModuleBasics,
+		runtime.ProvideBasicManager(appBuilder),
 	}
 }
 
