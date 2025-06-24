@@ -16,7 +16,7 @@ RUN apk add --no-cache make git &&\
 
 FROM alpine:latest
 
-COPY callisto-entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 COPY --from=builder /tmp/callisto/build/callisto /usr/local/bin/callisto
 
 # -S is a system user
@@ -33,5 +33,5 @@ EXPOSE 8000
 # Hasura actions port
 EXPOSE 3000 
 
-ENTRYPOINT ["entrypoint.sh"]
-CMD ["callist", "start", "--home /etc/callisto"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
+CMD ["callisto", "start", "--home /etc/callisto"]
